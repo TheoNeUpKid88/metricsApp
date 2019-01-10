@@ -251,7 +251,19 @@ body {
     align-content: center;
 }
 
-.card {
+.card_icon-lg{
+    font-size: 1.5rem;
+}
+.card-body-dash{
+    background-size: cover;
+    background-image: url('https://static1.squarespace.com/static/56f98e5d4c2f859026ac9b80/57168ddfa3360caf6fa9cd12/57168de1a3360caf6fa9cd15/1461095910067/Blue+Slate+Background.jpg?format=2500w');
+    background-repeat: no-repeat;
+}
+.card-body-chart{
+    background-color: #235C95;
+}
+
+.login_card {
     height: 450px;
     margin-top: 2em;
     margin-bottom: auto;
@@ -259,11 +271,11 @@ body {
     background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
-.card-header h3 {
+.login_card-header h3 {
     color: #beb28b;
 }
 
-.card-alert {
+.login_card-alert {
     margin-top: 5em;
 }
 
@@ -348,7 +360,4 @@ thead {
 }
 .datepicker td, .datepicker th {
    border: black;
-}
-.ui-datepicker-trigger{
-    background-color: 
 }

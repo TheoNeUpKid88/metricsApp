@@ -1,7 +1,7 @@
 <?php
 	include("includes/check_session.inc");
 		if(isset($_POST['submit_exec'])) {
-		$exec_date = $_POST['exec_date'];
+		$exec_date = $_POST['entry_date'];
 		$exec_date_new = strtotime($exec_date);
 		$date_to_srv = date("Y-m-d", $exec_date_new);
 		$exec_pr = $_POST['exec_pr'];
@@ -54,16 +54,7 @@
 				<?php if (isset($msg)) {echo $msg."<br>";}?>
 				<legend>Select Your Project</legend>
 				<div class="form-row mb-4">
-					<div class="form-group col-md-3">
-						<label class="control-label">Date</label>
-						<div class="input-group date" data-provide="datepicker">
-							<span class="input-group-prepend">
-								<button class="btn btn-outline-secondary btn" type="button">
-									<i class="far fa-calendar-alt"></i>
-								</button></span>
-							<input class="form-control" type="text" name="exec_date">
-						</div>
-					</div>
+				<?php require("includes/datepicker.inc"); ?>
 					<div class="col-md-1"></div>
 
 					<div class="form-group col-md-5">
@@ -94,14 +85,14 @@
 							<div class="form-group col-md-4">
 								<label class="control-label">Pass</label>
 								<div class="input-group">
-									<input class="form-control" type="number" min="0" name="cg_p" value="0">
+									<input class="form-control" type="number" min="0" name="cg_p" value="0" required>
 								</div>
 							</div>
 
 							<div class="form-group col-md-4">
 								<label class="control-label">Fail</label>
 								<div class="input-group">
-									<input class="form-control" type="number" min="0" name="cg_f" value="0">
+									<input class="form-control" type="number" min="0" name="cg_f" value="0" required>
 								</div>
 							</div>
 						</div>
@@ -113,14 +104,14 @@
 							<div class="form-group col-md-4">
 								<label class="control-label">Pass</label>
 								<div class="input-group">
-									<input class="form-control" type="number" min="0" name="func_p" value="0">
+									<input class="form-control" type="number" min="0" name="func_p" value="0" required>
 								</div>
 							</div>
 
 							<div class="form-group col-md-4">
 								<label class="control-label">Fail</label>
 								<div class="input-group">
-									<input class="form-control" type="number" min="0" name="func_f" value="0">
+									<input class="form-control" type="number" min="0" name="func_f" value="0" required>
 								</div>
 							</div>
 						</div>
@@ -132,14 +123,14 @@
 							<div class="form-group col-md-4">
 								<label class="control-label">Pass</label>
 								<div class="input-group">
-									<input class="form-control" type="number" min="0" name="nonf_p" value="0">
+									<input class="form-control" type="number" min="0" name="nonf_p" value="0" required>
 								</div>
 							</div>
 
 							<div class="form-group col-md-4">
 								<label class="control-label">Fail</label>
 								<div class="input-group">
-									<input class="form-control" type="number" min="0" name="nonf_f" value="0">
+									<input class="form-control" type="number" min="0" name="nonf_f" value="0" required>
 								</div>
 							</div>
 
@@ -153,7 +144,7 @@
 						<label class="control-label h5 mb-3">Test Case Source</label>
 						<div class="input-group">
 							<label class="control-label pr-3">Requirements</label>
-							<input class="form-control" type="radio" name="exec_source" value="1">
+							<input class="form-control" type="radio" name="exec_source" value="1" required>
 							<label class="control-label pr-3">New Functionality</label>
 							<input class="form-control" type="radio" name="exec_source" value="2">
 						</div>
@@ -206,7 +197,7 @@
 									WHERE t.user_id=$user_id
 									AND t.exec_date BETWEEN DATE_SUB(CURDATE(),INTERVAL WEEKDAY(CURDATE()) -0 DAY)
 									AND DATE_SUB(CURDATE(),INTERVAL WEEKDAY(CURDATE()) -6 DAY)
-									Group By p.pr_name, t.exec_date,t.round
+									Group By p.pr_name, t.exec_date,t.round,t.tcs_id
 									ORDER BY t.exec_date, p.pr_name, t.tcs_id";
 									$result = mysqli_query($con,$query);
 									if($result == false){

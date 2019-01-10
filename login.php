@@ -63,8 +63,8 @@ else {
    </header>
    <div class="container">
       <div class="d-flex justify-content-center h-100">
-         <div class="card">
-            <div class="card-header">
+         <div class="card login_card">
+            <div class="card-header login_card-header">
                <h3>Sign In</h3>
             </div>
             <div class="card-body">

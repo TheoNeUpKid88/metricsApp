@@ -1,17 +1,16 @@
 <?php
 	include("includes/check_session.inc");
 		if(isset($_POST['submit_tc'])) {
-		$tc_date = $_POST['tc_date'];
+		$tc_date = $_POST['entry_date'];
 		$tc_date_new = strtotime($tc_date);
 		$date_to_srv = date("Y-m-d", $tc_date_new);
 		$tc_pr = $_POST['tc_pr'];
 		$tc_cg = $_POST['tc_cg'];
 		$tc_func = $_POST['tc_func'];
 		$tc_nonf = $_POST['tc_nonf'];
-		$tc_time = $_POST['tc_time'];
 		$tc_source = $_POST['tc_source'];
 		include('includes/dbc.php');
-		$sql = "INSERT INTO tc_creation (user_id, pr_id, tc_cont_gram, tc_func, tc_non_func, timeframe, tcs_id, tc_date) VALUES ('$user_id','$tc_pr','$tc_cg','$tc_func','$tc_nonf','$tc_time','$tc_source','$date_to_srv')";
+		$sql = "INSERT INTO tc_creation (user_id, pr_id, tc_cont_gram, tc_func, tc_non_func, tcs_id, tc_date) VALUES ('$user_id','$tc_pr','$tc_cg','$tc_func','$tc_nonf','$tc_source','$date_to_srv')";
 		if($con->query($sql) === TRUE)
 		{
 			$msg = '<div class="alert alert-success mx-5 px-1"> <strong>Success!</strong> Test Case entry has been added.</div>';
@@ -52,16 +51,7 @@
 						<?php if (isset($msg)) {echo $msg."<br>";}?>
 						<legend>Select Your Project</legend>
 						<div class="form-row mb-4">
-							<div class="form-group col-md-3">
-								<label class="control-label">Date</label>
-								<div class="input-group date" data-provide="datepicker">
-									<span class="input-group-prepend">
-										<button class="btn btn-outline-secondary btn" type="button">
-											<i class="far fa-calendar-alt"></i>
-										</button></span>
-									<input class="form-control" type="text" name="tc_date">
-								</div>
-							</div>
+						<?php require("includes/datepicker.inc"); ?>
 							<div class="col-md-1"></div>
 
 							<div class="form-group col-md-6">
@@ -84,41 +74,31 @@
 							<div class="form-group col-md-2">
 								<label class="control-label">Content/Grammar</label>
 								<div class="input-group">
-									<input class="form-control" type="number" min="0" name="tc_cg" value="0">
+									<input class="form-control" type="number" min="0" name="tc_cg" value="0" required>
 								</div>
 							</div>
 							<div class="col-md-2"></div>
 							<div class="form-group col-md-2">
 								<label class="control-label">Functional</label>
 								<div class="input-group">
-									<input class="form-control" type="number" min="0" name="tc_func" value="0">
+									<input class="form-control" type="number" min="0" name="tc_func" value="0" required>
 								</div>
 							</div>
 							<div class="col-md-2"></div>
 							<div class="form-group col-md-4">
 								<label class="control-label">Non-Functional</label>
 								<div class="input-group">
-									<input class="form-control col-md-6" type="number" min="0" name="tc_nonf" value="0">
+									<input class="form-control col-md-6" type="number" min="0" name="tc_nonf" value="0" required>
 								</div>
 							</div>
 						</div>
 						<legend>Enter Test Case Details</legend>
 						<div class="form-row mb-4">
 							<div class="form-group col-md-5">
-								<label class="control-label h5 mb-3">Time of Test Case Creation</label>
-								<div class="input-group">
-									<label class="control-label pr-3">Pre-Delivery</label>
-									<input class="form-control" type="radio" name="tc_time" value="Pre-delivery">
-									<label class="control-label pr-3">Post Delivery</label>
-									<input class="form-control" type="radio" name="tc_time" value="Post Delivery">
-								</div>
-							</div>
-							<div class="col-md-1"></div>
-							<div class="form-group col-md-5">
 								<label class="control-label h5 mb-3">Test Case Source</label>
 								<div class="input-group">
 									<label class="control-label pr-3">Requirements</label>
-									<input class="form-control" type="radio" name="tc_source" value="1">
+									<input class="form-control" type="radio" name="tc_source" value="1" required>
 									<label class="control-label pr-3">New Functionality</label>
 									<input class="form-control" type="radio" name="tc_source" value="2">
 								</div>
@@ -138,7 +118,6 @@
 							<tr>
 								<th>Day</th>
 								<th>Project Name</th>
-								<th>Creation</th>
 								<th>Source</th>
 								<th>Content/Grammar</th>
 								<th>Functional</th>
@@ -153,16 +132,15 @@
 									SUM(tcc.tc_cont_gram) as cg,
 									SUM(tcc.tc_func) as func,
 									SUM(tcc.tc_non_func) as nonf,
-									s.tcs_type,
-									tcc.timeframe
+									s.tcs_type
 							  FROM tc_creation tcc
 							  LEFT JOIN projects p ON p.pr_id = tcc.pr_id
 							  LEFT JOIN tc_source s ON s.tcs_id = tcc.tcs_id
 							  WHERE user_id = $user_id
 							  AND tcc.tc_date BETWEEN DATE_SUB(CURDATE(),INTERVAL WEEKDAY(CURDATE()) - 0 DAY)
 							  AND DATE_SUB(CURDATE(),INTERVAL WEEKDAY(CURDATE()) - 6 DAY)
-							  GROUP BY tcc.tc_date, p.pr_name
-							  ORDER BY tcc.tc_date, p.pr_name, s.tcs_type";
+							  GROUP BY p.pr_name,tcc.tcs_id
+							  ORDER BY tcc.tc_date, p.pr_name";
 									$result = mysqli_query($con,$query);
 									if($result == false){
 										$error_message = mysqli_error();
@@ -176,7 +154,6 @@
 										$day_date = strftime("%A",strtotime($convert_day));
 										echo '<tr><td>'.$day_date.'</td>';
 										echo '<td>'.$row['pr_name'].'</td>';
-										echo '<td>'.$row['timeframe'].'</td>';
 										echo '<td>'.$row['tcs_type'].'</td>';
 										echo '<td class="text-center">'.$row['cg'].'</td>';
 										echo '<td class="text-center">'.$row['func'].'</td>';

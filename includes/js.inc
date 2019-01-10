@@ -6,13 +6,13 @@ $(document).ready(function () {
         if (role === 'User') {
             //document.write(role);
             $('#superuser').hide();
-            $('#superuser-2').hide();
             $('#manager').hide();
         }
         if (role === 'Manager') {
             //document.write(role);
             $('#user').hide();
             $('#user-2').hide();
+            $('#user-3').hide();
         }
 });
 $(document).on('click', '.pass_show .ptxt', function () {
@@ -51,6 +51,7 @@ $(document).on('click', '.pass_show .ptxt', function () {
   } );
 
   //EDIT TABLE 
+
 $(document).ready(function(){
   $('.editbtn').click(function () {
               var currentTD = $(this).parents('tr').find('td');

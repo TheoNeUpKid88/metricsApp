@@ -6,17 +6,39 @@
 		<li class="nav-item active">
 			<a class="nav-link" href="index.php" ><i class="fas fa-home" style="padding-right: 1em;"></i></a>
 		</li>
-		<li class="nav-item" id="user">
-			<a class="nav-link" href="tickets.php" id="user">Tickets</a>
-		</li>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item dropdown" id="user">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+						Timelog
+					</a>
+					<div class="dropdown-menu m-0">
+						<a class="dropdown-item" href="project_time.php">Projects</a>
+						<a class="dropdown-item" href="tickets.php">Tickets</a>
+					</div>
+				</li>
+			</ul>
+		</div>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item dropdown" id="user-2">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
-						Projects
+						Leads
 					</a>
 					<div class="dropdown-menu m-0">
-						<a class="dropdown-item" href="project_time.php">Time Log</a>
+						<a class="dropdown-item" href="lead_status.php">Project Status</a>
+						<a class="dropdown-item" href="lead_defects.php">Defect Resolution</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item dropdown" id="user-3">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+						QC
+					</a>
+					<div class="dropdown-menu m-0">
 						<a class="dropdown-item" href="test_cases.php">Test Cases</a>
 						<a class="dropdown-item" href="execution.php">Execution</a>
 						<a class="dropdown-item" href="defects.php">Defects</a>
@@ -24,19 +46,27 @@
 				</li>
 			</ul>
 		</div>
-		<li class="nav-item" id="superuser">
-			<a class="nav-link" href="attendance.php">Attendance</a>
-		</li>
-		<li class="nav-item" id="manager">
-			<a class="nav-link" href="#">Reports</a>
-		</li>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item dropdown" id="superuser-2">
+				<li class="nav-item dropdown" id="user-4">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+						Reports
+					</a>
+					<div class="dropdown-menu m-0">
+						<a class="dropdown-item" href="#">My Projects</a>
+						<a class="dropdown-item" href="#">My QC</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item dropdown" id="superuser">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
 						Admin
 					</a>
 					<div class="dropdown-menu m-0">
+						<a class="dropdown-item" href="attendance.php">Attendance</a>
 						<a class="dropdown-item" href="project_admin.php">Project Management</a>
 						<a class="dropdown-item" href="ticket_admin.php">Ticket Management</a>
 						<a class="dropdown-item" href="user_admin.php">User Management</a>

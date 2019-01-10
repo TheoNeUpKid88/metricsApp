@@ -46,8 +46,8 @@ else {
   </header>
   <div class="container">
     <div class="d-flex justify-content-center h-100">
-      <div class="card">
-        <div class="card-header">
+      <div class="card login_card ">
+        <div class="card-header login_card-header">
           <h3>Enter Your New Credentials</h3>
         </div>
 

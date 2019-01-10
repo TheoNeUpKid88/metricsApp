@@ -4,7 +4,7 @@
 		header('Location: login.php');
 	}
 	if(isset($_POST['submit_attd'])) {
-		$attd_date = $_POST['attd_date'];
+		$attd_date = $_POST['entry_date'];
 		$attd_date_new = strtotime($attd_date);
 		$date_to_srv = date("Y-m-d", $attd_date_new);
 		$attd_category = $_POST['category'];
@@ -48,16 +48,7 @@
 					<?php if (isset($msg)) {echo $msg."<br>";}?>
 					<legend>Enter Attendance Status</legend>
 					<div class="form-row">
-						<div class="form-group col-md-3">
-							<label class="control-label">Date</label>
-							<div class="input-group date" data-provide="datepicker">
-								<span class="input-group-prepend">
-									<button class="btn btn-outline-secondary btn" type="button">
-									<i class="far fa-calendar-alt"></i>
-								</button></span>
-								<input class="form-control" type="text" name="attd_date" required>
-							</div>
-						</div>
+					<?php require("includes/datepicker.inc"); ?>
 						<div class="col-md-1"></div>
 						
 						<div class="form-group col-md-4">

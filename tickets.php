@@ -1,7 +1,7 @@
 <?php
 	include("includes/check_session.inc");
 	if(isset($_POST['submit_ttl'])) {
-		$tix_date = $_POST['tix_date'];
+		$tix_date = $_POST['entry_date'];
 		$tix_date_new = strtotime($tix_date);
 		$date_to_srv = date("Y-m-d", $tix_date_new);
 		$tix_num = $_POST['tix_num'];
@@ -50,16 +50,7 @@
 						<?php if (isset($msg)) {echo $msg."<br>";}?>
 						<legend>Select Your Ticket</legend>
 						<div class="form-row mb-4">
-							<div class="form-group col-md-3">
-								<label class="control-label">Date</label>
-								<div class="input-group date" data-provide="datepicker">
-									<span class="input-group-prepend">
-										<button class="btn btn-outline-secondary btn" type="button">
-											<i class="far fa-calendar-alt"></i>
-										</button></span>
-									<input class="form-control" type="text" name="tix_date" required>
-								</div>
-							</div>
+						<?php require("includes/datepicker.inc"); ?>
 							<div class="col-md-1"></div>
 
 							<div class="form-group col-md-5">
