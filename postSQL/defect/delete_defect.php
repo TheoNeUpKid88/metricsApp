@@ -1,7 +1,6 @@
 <?php
-$df_id = $_POST['df_id'];
 	include('includes/dbc.php');
-	$sql = "DELETE FROM defects WHERE df_id=$df_id";
+	$sql = "DELETE FROM defects WHERE df_id= $_GET['df_id']";
 	if($con->query($sql) === TRUE)
 	{
         $edit_msg = '<div class="alert alert-success mx-5 px-1"> <strong>Success!</strong> Defect entry has been deleted.</div>';

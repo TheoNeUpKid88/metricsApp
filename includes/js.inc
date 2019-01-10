@@ -66,19 +66,14 @@ $(document).ready(function(){
 
                     })
                   });
-              } else {
-               // alert("second if "+currentTD.html());
-                 $.each(currentTD, function () {
+              }
+    $('.savebtn').click(function () {
+              $.each(currentTD, function () {
                     //alert("second if "+currentTD.html());
                       $(this).prop('contenteditable', false).removeAttr("style");
+
+                    })
                   });
-              }
-    
-              $(this).html($(this).html() == 'Edit' ? 'Save' : 'Edit')
-              if ($(this).html() == 'Save'){
-               // alert("third if "+currentTD.html());
-                $(this).prop('contenteditable',false)
-              }
     
           });
           });

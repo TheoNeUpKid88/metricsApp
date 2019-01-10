@@ -53,8 +53,8 @@
 						Reports
 					</a>
 					<div class="dropdown-menu m-0">
-						<a class="dropdown-item" href="#">My Projects</a>
-						<a class="dropdown-item" href="#">My QC</a>
+						<a class="dropdown-item" href="analyst_prj.php">My Projects</a>
+						<a class="dropdown-item" href="analyst_qc.php">My QC</a>
 					</div>
 				</li>
 			</ul>

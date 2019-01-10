@@ -83,7 +83,7 @@
 				echo $monday." - ".$sunday;
 			?>
 		</h3>
-		<div class="Display-3">QI Metrics</div>
+		<h3>QI Metrics</h3>
           <div class="row mb-4">
             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
               <div class="card card-statistics">
@@ -224,17 +224,19 @@
                 </div>
               </div>
             </div>
-		  </div>
+			</div>
+			<br>
+			<h3>My Lead</h3>
 		  <br>
-		  <div class="Display-3">Your Metrics</div>
+		  <h3>My QC</h3>
 		  <div class="row">
             <div class="col-md-12 grid-margin">
               <div class="card">
-                <div class="card-body">
+                <div class="card-body" style="background-color:#11294F">
                   <div class="row d-none d-sm-flex mb-4">
                     <div class="col-4">
-                      <h5 class="text-primary">Test Cases Written</h5>
-                      <p>
+                      <h5 class="text-center">Test Cases Written</h5>
+                      <p class="text-center">
 					  <?php
 									include('includes/dbc.php');
 									$query = "SELECT SUM(tc_cont_gram)+SUM(tc_func)+SUM(tc_non_func) as 'Analyst_TCW'
@@ -252,8 +254,8 @@
 					  </p>
                     </div>
                     <div class="col-4">
-                      <h5 class="text-primary">Test Cases Executed</h5>
-                      <p>
+                      <h5 class="text-center">Test Cases Executed</h5>
+                      <p class="text-center">
 					  <?php
 									include('includes/dbc.php');
 									$query = "SELECT SUM(cont_gram_pass)+SUM(cont_gram_fail)+SUM(func_pass)+SUM(func_fail)+SUM(non_func_pass)+SUM(non_func_fail) as 'Analyst_TCE' 
@@ -268,8 +270,8 @@
 					  </p>
                     </div>
                     <div class="col-4">
-                      <h5 class="text-primary">Defects Found</h5>
-                      <p>
+                      <h5 class="text-center">Defects Found</h5>
+                      <p class="text-center">
 					  <?php
 									include('includes/dbc.php');
 									$query = "SELECT SUM(cg_critical)+SUM(cg_major)+SUM(cg_minor)+SUM(func_critical)+SUM(func_major)+SUM(func_minor)+SUM(nonf_critical)+SUM(nonf_major)+SUM(nonf_minor) as 'Analyst_TCD'
@@ -287,7 +289,7 @@
 					  </p>
                     </div>
                   </div>
-				  <canvas id="myChart" height="150"></canvas>
+				  <canvas id="myChart" height="150" style="background-color: #EDEADF;"></canvas>
 <script>
 var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(ctx, {

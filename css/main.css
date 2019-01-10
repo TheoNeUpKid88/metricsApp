@@ -235,7 +235,7 @@ select {
 
 html,
 body {
-    background-color: #0E253C;
+    background-color: #0B132B; /* old bckgrnd - 0E253C*/
 
     background-size: cover;
     background-repeat: no-repeat;
@@ -361,3 +361,4 @@ thead {
 .datepicker td, .datepicker th {
    border: black;
 }
+
