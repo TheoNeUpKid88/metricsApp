@@ -19,10 +19,11 @@
 		$nf_prld_wad = $_POST['nf_prld_wad'];
 		$nf_prld_def = $_POST['nf_prld_def'];
 		include('includes/dbc.php');
-		$sql = "INSERT INTO projects (pr_id, tl_date, tl_time, t_type, l_type, round) VALUES ('$tix_num','$user_id','$date_to_srv','$tix_tspent','$tix_ttype', '$tix_logtype','$tix_rnd')";
+		$sql = "INSERT INTO def_resolutions (user_id, date, pr_id, round, cg_passqi, cg_passqiai, cg_wadesigned, cg_deferred, func_passqi, func_passqiai, func_wadesigned, func_deferred, nonf_passqi, nonf_passqiai, nonf_wadesigned, nonf_deferred) 
+		VALUES ('$user_id','$date_to_srv','$prld_df_name','$prld_rnd', '$cg_prld_passqi','$cg_prld_pAsIs','$cg_prld_wad','$cg_prld_def','$f_prld_passqi','$f_prld_pAsIs','$f_prld_wad','$f_prld_def','$nf_prld_passqi','$nf_prld_pAsIs','$nf_prld_wad','$nf_prld_def')";
 		if($con->query($sql) === TRUE)
 		{
-			$msg = '<div class="alert alert-success mx-5 px-1"> <strong>Success!</strong> Time entry has been added.</div>';
+			$msg = '<div class="alert alert-success mx-5 px-1"> <strong>Success!</strong> Defect resolutions have been added.</div>';
 		}
 		else
 		{

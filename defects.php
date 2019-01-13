@@ -27,7 +27,11 @@ if(isset($_POST['submit_defect'])) {
 		{
 			$msg = '<div class="alert alert-danger mx-5 px-1"> <strong>Not Submitted!</strong> Please try again. </div>';
 		}
-    }
+	}
+	if (isset($_SESSION['del_msg'])) {
+		echo $_SESSION['del_msg'];
+		unset($_SESSION['del_msg']);
+	   }	
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -272,16 +276,18 @@ if(isset($_POST['submit_defect'])) {
 										  <div class="dropdown-menu">
 											<a class="dropdown-item editbtn">
 											  <i class="fa fa-reply fa-fw"></i>Edit</a>
-											<div class="dropdown-divider"></div>
-											<a class="dropdown-item savebtn">
+											  <a class="dropdown-item cancelbtn" href="javascript:history.go(0)">
+											  <i class="fa fa-reply fa-fw"></i>Cancel</a>
+											  <a class="dropdown-item savebtn" href="DB/defect/delete_defect.php?id='. $df_id .'">
 											  <i class="fa fa-check text-success fa-fw"></i>Save</a>
-											<a class="dropdown-item deletebtn" href="postSQL/defect/delete_defect.php?id=df_id">
+											<div class="dropdown-divider"></div>
+											
+											<a class="dropdown-item" href="DB/defect/delete_defect.php?id='. $df_id .'">
 											  <i class="fa fa-times text-danger fa-fw"></i>Delete</a>
 										  </div>
 										</div>
 									  </div></td></tr>';
 									}
-									
 					?>
 					</tbody>
 					</table>
@@ -291,6 +297,5 @@ if(isset($_POST['submit_defect'])) {
 			</div>
 				<?php include("includes/footer.inc"); ?>
 								</div>
-</body>
-
+	</body>
 </html>

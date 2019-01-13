@@ -7,10 +7,10 @@
 		$prld_name = $_POST['prld_name'];
 		$prld_status = $_POST['prld_status'];
 		include('includes/dbc.php');
-		$sql = "INSERT INTO projects (pr_id, tl_date, tl_time, t_type, l_type, round) VALUES ('$tix_num','$user_id','$date_to_srv','$tix_tspent','$tix_ttype', '$tix_logtype','$tix_rnd')";
+		$sql = "INSERT INTO pr_status (st_date, pr_id, pr_status) VALUES ('$date_to_srv','$prld_name','$prld_status')";
 		if($con->query($sql) === TRUE)
 		{
-			$msg = '<div class="alert alert-success mx-5 px-1"> <strong>Success!</strong> Time entry has been added.</div>';
+			$msg = '<div class="alert alert-success mx-5 px-1"> <strong>Success!</strong> Project Status has been updated.</div>';
 		}
 		else
 		{

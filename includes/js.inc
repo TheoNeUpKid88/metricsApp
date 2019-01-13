@@ -46,18 +46,27 @@ $(document).on('click', '.pass_show .ptxt', function () {
     $( "#datepicker" ).datepicker({
         showOn: "both",
         showAnim: "slideDown",
-        buttonText: "<i class='far fa-calendar-alt'></i>"
+        buttonText: "<i class='far fa-calendar-alt'></i>",
+        showButtonPanel: true,
+        firstDay: 1,
+        maxDate: "+0d"
+        
     });
   } );
 
   //EDIT TABLE 
 
 $(document).ready(function(){
+    $('.savebtn').hide();
+    $('.cancelbtn').hide();
   $('.editbtn').click(function () {
+      $('.editbtn').hide();
+      $('.savebtn').show();
+      $('.cancelbtn').show();
               var currentTD = $(this).parents('tr').find('td');
               //alert('this '+$(this).html() );
               if ($(this).text().trim() == 'Edit') {
-                  currentTD = $(this).parents('tr').find($("td").not(":nth-child(1)"));
+                  currentTD = $(this).parents('tr').find($("td").not(":nth-child(1), :nth-child(2), :nth-child(3), :nth-child(4)"));
                   //alert("first if "+currentTD.html());
                   $.each(currentTD, function () {
                       $(this).prop('contenteditable', true).css({
@@ -67,11 +76,14 @@ $(document).ready(function(){
                     })
                   });
               }
-    $('.savebtn').click(function () {
+    $('.cancelbtn').click(function () {
               $.each(currentTD, function () {
                     //alert("second if "+currentTD.html());
+                    $(this).val($(this).data("previous-value"));
                       $(this).prop('contenteditable', false).removeAttr("style");
-
+                    $('.editbtn').show();
+                    $('.savebtn').hide();
+                    $('.cancelbtn').hide();
                     })
                   });
     

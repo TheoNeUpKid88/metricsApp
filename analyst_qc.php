@@ -1,22 +1,21 @@
 <?php
 	require("includes/check_session.inc");
-	if(isset($_POST['submit_prld_status'])) {
-		$status_date = $_POST['entry_date'];
-		$status_date_new = strtotime($status_date);
-		$date_to_srv = date("Y-m-d", $status_date_new);
-		$prld_name = $_POST['prld_name'];
-		$prld_status = $_POST['prld_status'];
-		include('includes/dbc.php');
-		$sql = "INSERT INTO projects (pr_id, tl_date, tl_time, t_type, l_type, round) VALUES ('$tix_num','$user_id','$date_to_srv','$tix_tspent','$tix_ttype', '$tix_logtype','$tix_rnd')";
-		if($con->query($sql) === TRUE)
-		{
-			$msg = '<div class="alert alert-success mx-5 px-1"> <strong>Success!</strong> Time entry has been added.</div>';
-		}
-		else
-		{
-			$msg = '<div class="alert alert-danger mx-5 px-1"> <strong>Not Submitted!</strong> Please try again. </div>';
-		}
-	}
+	include('includes/dbc.php');
+	$query_tce = "SELECT SUM(cont_gram_pass)+SUM(cont_gram_fail)+SUM(func_pass)+SUM(func_fail)+SUM(non_func_pass)+SUM(non_func_fail) as tce_total,
+			 user_id
+			 FROM `tc_execution`
+			 WHERE 1=1
+			 AND exec_date BETWEEN DATE_SUB(CURDATE(),INTERVAL WEEKDAY(CURDATE()) -0 DAY) AND DATE_SUB(CURDATE(),INTERVAL WEEKDAY(CURDATE()) -6 DAY)
+			 AND user_id=$user_id
+			 GROUP BY exec_date
+			 Order By exec_date";
+			  $result_tce = mysqli_query($con,$query_tce);
+			  //$o_data = array();
+			  $tce_total = '';
+			  while($row = mysqli_fetch_array($result_tce)) {
+				  $tce_total = $tce_total.$row['tce_total'].',';
+			  }
+				  $tce_total = trim($tce_total,",");
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -26,7 +25,7 @@
 		require("includes/js.inc"); 
 		?>
 	<title>
-		Project Status
+		My QC Metrics
 	</title>
 </head>
 
@@ -56,7 +55,48 @@
 
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+	  <canvas id="myChart" height="150" style="background-color: #EDEADF;"></canvas>
+<script>
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday"],
+        datasets: [{
+            label: 'Test Cases Written',
+            data: [<?php echo $tc_total;?>],
+            backgroundColor: 'rgba(165,26,77, 0.2)',
+            borderColor: 'rgba(165,26,77,1)',
+            borderWidth: 1
+		},
+		{
+            label: 'Test Cases Executed',
+            data: [<?php echo $tce_total;?>],
+            backgroundColor: 'rgba(0,140,192, 0.2)',
+            borderColor: 'rgba(0,140,192)',
+            borderWidth: 1
+		},
+		{
+            label: 'Defects Found',
+            data: [<?php echo $df_total;?>],
+            backgroundColor: 'rgba(0,121,38, 0.2)',
+            borderColor: 'rgba(0,121,38,1)',
+            borderWidth: 1
+		},
+	]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+</script>
+
       </div>
     </div>
   </div>
