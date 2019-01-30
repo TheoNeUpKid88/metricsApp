@@ -53,7 +53,7 @@
     background-image: url('https://static1.squarespace.com/static/56f98e5d4c2f859026ac9b80/57168ddfa3360caf6fa9cd12/57168de1a3360caf6fa9cd15/1461095910067/Blue+Slate+Background.jpg?format=2500w');
     background-repeat: no-repeat;
     color: #beb28b;
-    opacity: 0.6;
+    opacity: 0.9;
     font-family: 'Quicksand', sans-serif;
 }
 
@@ -361,4 +361,26 @@ thead {
 .datepicker td, .datepicker th {
    border: black;
 }
-
+.page_hr {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    border-top: 5px solid #beb28b;
+}
+.logo_div {
+    position: relative;
+  text-align: center;
+  color: white;
+}
+.logo_text {
+    position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #FFC312;
+  letter-spacing: 9px;
+  line-height: 1.4;
+}
+.head_text {
+    color: #FFC312;
+  letter-spacing: 7px;
+}

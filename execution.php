@@ -5,7 +5,7 @@
 		$exec_date_new = strtotime($exec_date);
 		$date_to_srv = date("Y-m-d", $exec_date_new);
 		$exec_pr = $_POST['exec_pr'];
-		$exec_rnd = $_POST['exec_rnd'];
+		$exec_rnd = $_POST['round'];
 		$cg_p = $_POST['cg_p'];
 		$cg_f = $_POST['cg_f'];
 		$func_p = $_POST['func_p'];
@@ -40,15 +40,18 @@
 <div id="page-container">
 		<div id="content-wrap">
 	<header class="jumbotron mt-4">
-		<div class="container">
-			<div class="display-4 mb-4">My Testing Progress
-				<!-- <img src="images/Logo2.png" alt="logo"> -->
-			</div>
-		</div>
+	<div class="container logo_div">
+					<div class="display-1 mb-4">
+						<img src="images/logo_metrix-sm.png" alt="logo">
+						<div class="logo_text">
+						My Testing Progress
+						</div>
+					</div>
+</div>
 	</header>
 	<div class="container">
 		<?php include("includes/nav.inc"); ?>
-		<h1 class="my-3 text-center">Report Your Test Case Execution</h1>
+		<h1 class="my-5 text-center">Report Your Test Case Execution</h1>
 		<div class="all_forms">
 			<form method="POST">
 				<?php if (isset($msg)) {echo $msg."<br>";}?>
@@ -72,12 +75,9 @@
 						</select>
 					</div>
 					<div class="col-md-1"></div>
-					<div class=" form-group col-md-2">
-						<label class="control-label">Round</label>
-						<input class="form-control" type="number" name="exec_rnd" min="1" max="20" required>
-					</div>
+					<?php require("includes/round.inc"); ?>
 				</div>
-				<legend>Enter Test Case Totals</legend>
+				<legend>Enter Test Case Outcome</legend>
 				<div class="form-row mb-4">
 					<div class="col-md-3">
 						<h5>Content/Grammar</h5>
@@ -158,8 +158,16 @@
 
 			</form>
 		</div>
-		<section>
-			<?php include("includes/this_week.inc"); ?>
+		</div>
+
+		<div class="row my-4">
+					<div class="col"><hr style="margin-top: 50px; margin-bottom: 50px; border-top: 4px solid #beb28b;"></div>
+					<div class="col-auto" style="margin-top: 13px; margin-bottom: 13px;"><?php include("includes/this_week.inc"); ?></div>
+					<div class="col"><hr style="margin-top: 50px; margin-bottom: 50px; border-top: 4px solid #beb28b;"></div>
+				</div>
+				
+				<div class="container-fluid">
+					<div class="row">
 			<table class="table table-responsive-md" id="dtBasicExample">
 				<thead class="text-center">
 					<tr class="double_row">
@@ -167,6 +175,7 @@
 						<th class="border-left" colspan="2">Content/Grammar</th>
 						<th class="border-left" colspan="2">Functional</th>
 						<th class="border-left" colspan="2">Non-Functional</th>
+						<th class="border-left"></th>
 					</tr>
 					<tr>
 						<th>Day</th>
@@ -179,12 +188,13 @@
 						<th>Fail</th>
 						<th class="border-left" >Pass</th>
 						<th>Fail</th>
+						<th class="border-left"></th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php
 									include('includes/dbc.php');
-									$query = "SELECT t.exec_date,t.tcs_id,p.pr_name,t.round,s.tcs_type,
+									$query = "SELECT t.exec_date,t.tcs_id,p.pr_name,t.round,s.tcs_type,t.tce_id,
 									SUM(t.cont_gram_pass) as contentGramarPass,
 									SUM(t.cont_gram_fail) as contentGramarFail,
 									SUM(t.func_pass) as functionalPass,
@@ -205,9 +215,10 @@
 										echo "<p>There has been a query error: $error_message</p>";
 									}
 									if(mysqli_num_rows($result)==0) {
-										echo "No analysts are here.";
+										echo "There are no new entries.";
 									}
 									while($row=mysqli_fetch_assoc($result)) {
+										$tce_id = $row['tce_id'];
 										$convert_day = $row['exec_date'];
 										$day_date = strftime("%A",strtotime($convert_day));
 										echo '<tr><td>'.$day_date.'</td>';
@@ -219,14 +230,17 @@
 										echo '<td class="border-left text-center" >'.$row['functionalPass'].'</td>';
 										echo '<td class="text-center">'.$row['functionalFail'].'</td>';
 										echo '<td class="border-left text-center" >'.$row['NonfunctionalPass'].'</td>';
-										echo '<td class="text-center">'.$row['NonfunctionalFail'].'</td></tr>';
+										echo '<td class="text-center">'.$row['NonfunctionalFail'].'</td>';
+										echo '<td  class="border-left" align="center"><div>
+										<a class="btn btn-primary delbtn" href="DB/delete_row.php?id='. $tce_id .'&table=tc_execution&id_name=tce_id">
+										<i class="fa fa-times text-danger fa-fw"></i>Delete</a></div></td></tr>';
 									}
 					?>
 				</tbody>
 								</table>
-		</section>
+								</div>
+								</div>
 		<?php include("includes/to_top.inc"); ?>
-	</div>
 	</div>
 				<?php include("includes/footer.inc"); ?>
 								</div>

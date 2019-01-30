@@ -199,3 +199,22 @@
 
 
 </script>
+<!-- EDIT TABLE DROP DOWN 
+<div class="btn-group dropdown">
+<button type="button" class="btn dropdown-toggle btn-sm" data-toggle="dropdown">
+Manage
+</button>
+<div class="dropdown-menu">
+<a class="dropdown-item editbtn">
+	<i class="fa fa-reply fa-fw"></i>Edit</a>
+	<a class="dropdown-item cancelbtn" href="javascript:history.go(0)">
+	<i class="fa fa-reply fa-fw"></i>Cancel</a>
+	<a class="dropdown-item savebtn">
+	<i class="fa fa-check text-success fa-fw"></i>Save</a>
+<div class="dropdown-divider"></div>
+
+<a class="dropdown-item" href="DB/delete_row.php?id='. $df_id .'&table=defects&id_name=df_id">
+	<i class="fa fa-times text-danger fa-fw"></i>Delete</a>
+</div>
+</div>
+</div> -->

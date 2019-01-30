@@ -38,7 +38,7 @@ $t_result = mysqli_query($con,$t_sql);
 $t_result2 = mysqli_query($con,$t_sql2);
 }
 else {
-   $msg = '<div class="alert alert-danger card-alert"> <strong>Invalid Credentials!</strong> Please try again. </div>';
+   $msg = '<div class="alert alert-danger card-alert mt-2 border border-info"> <strong>Invalid Credentials!</strong> Please try again. </div>';
 }
 }
 ?>
@@ -92,7 +92,7 @@ else {
             </div>
             <div class="card-footer">
                <div class="d-flex justify-content-center">
-                  <a href="password_reset.php" class="link_font">Forgot your password?</a>
+                  <a href="password_reset.php" class="link_font">Click here to reset your password</a>
                </div>
             </div>
          </div>

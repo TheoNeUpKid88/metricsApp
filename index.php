@@ -1,56 +1,7 @@
 <?php
 	include("includes/check_session.inc");
 	include('includes/dbc.php');
-	$query_tc = "SELECT SUM(tc_cont_gram)+SUM(tc_func)+SUM(tc_non_func) as tc_total, 
-	user_id, tc_date
-	FROM `tc_creation`
-	WHERE 1=1
-	AND tc_date BETWEEN DATE_SUB(CURDATE(),INTERVAL WEEKDAY(CURDATE()) -0 DAY)
-	AND DATE_SUB(CURDATE(),INTERVAL WEEKDAY(CURDATE()) -6 DAY)
-	AND user_id=$user_id
-	GROUP By tc_date
-	Order By tc_date";
-    $result_tc = mysqli_query($con,$query_tc);
-	//$o_data = array();
-	$tc_total = '';
-    while($row = mysqli_fetch_array($result_tc)) {
-		$tc_total = $tc_total.$row['tc_total'].',';
-	}
-		$tc_total = trim($tc_total,",");
-
-		$query_df = "SELECT SUM(cg_critical)+SUM(cg_major)+SUM(cg_minor)+SUM(func_critical)+SUM(func_major)+SUM(func_minor)+SUM(nonf_critical)+SUM(nonf_major)+SUM(nonf_minor) as df_total,
-		user_id
-		FROM `defects`
-		WHERE 1=1
-		AND df_date BETWEEN DATE_SUB(CURDATE(),INTERVAL WEEKDAY(CURDATE()) -0 DAY)
-		AND DATE_SUB(CURDATE(),INTERVAL WEEKDAY(CURDATE()) -6 DAY)
-		AND user_id=$user_id
-		GROUP By df_date
-		Order By df_date";
-		 $result_df = mysqli_query($con,$query_df);
-		 //$o_data = array();
-		 $df_total = '';
-		 while($row = mysqli_fetch_array($result_df)) {
-			 $df_total = $df_total.$row['df_total'].',';
-		 }
-			 $df_total = trim($df_total,",");
-
-			 $query_tce = "SELECT SUM(cont_gram_pass)+SUM(cont_gram_fail)+SUM(func_pass)+SUM(func_fail)+SUM(non_func_pass)+SUM(non_func_fail) as tce_total,
-			 user_id
-			 FROM `tc_execution`
-			 WHERE 1=1
-			 AND exec_date BETWEEN DATE_SUB(CURDATE(),INTERVAL WEEKDAY(CURDATE()) -0 DAY) AND DATE_SUB(CURDATE(),INTERVAL WEEKDAY(CURDATE()) -6 DAY)
-			 AND user_id=$user_id
-			 GROUP BY exec_date
-			 Order By exec_date";
-			  $result_tce = mysqli_query($con,$query_tce);
-			  //$o_data = array();
-			  $tce_total = '';
-			  while($row = mysqli_fetch_array($result_tce)) {
-				  $tce_total = $tce_total.$row['tce_total'].',';
-			  }
-				  $tce_total = trim($tce_total,",");
-
+	include('DB/reports/dashboard_qc.inc');
 ?>
 
 <!DOCTYPE HTML>
@@ -66,24 +17,27 @@
 	<div id="page-container">
 		<div id="content-wrap">
 		<header class="jumbotron mt-4">
-			<div class="container">
-			<div class="display-4 mb-4">Welcome To QMETRIX
-				<!-- <img src="images/Logo2.png" alt="logo"> -->
-		    </div>
-		</div>
+		<div class="container logo_div">
+					<div class="display-1 mb-4">
+						<img src="images/logo_metrix-sm.png" alt="logo">
+						<div class="logo_text">
+						QMETRIX
+						</div>
+					</div>
+				</div>
 		</header>
 		<div class="container">
 		<?php include("includes/nav.inc"); ?>
-		<h2 class="mb-3">Welcome <?php include("includes/fullname.inc"); ?>!</h2>
+		<h2 class="mt-5 mb-2 head_text text-center">Welcome to QMetrix <?php echo $fname ?>!</h2>
 		<br>
-		<h3 class="mb-4">Metrics for the Week of 
+		<h3 class="mb-5 text-center">Metrics for the Week of 
 			<?php
 				$monday = date('F jS', strtotime('monday this week'));
 				$sunday = date('F jS, Y', strtotime('sunday this week'));
 				echo $monday." - ".$sunday;
 			?>
 		</h3>
-		<h3>QI Metrics</h3>
+		<h3 class="mt-5 mb-4">QI Department Metrics</h3>
           <div class="row mb-4">
             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
               <div class="card card-statistics">
@@ -226,9 +180,9 @@
             </div>
 			</div>
 			<br>
-			<h3>My Lead</h3>
+			<h3 class="my-5">My Lead</h3>
 		  <br>
-		  <h3>My QC</h3>
+		  <h3 class="my-5">My QC</h3>
 		  <div class="row">
             <div class="col-md-12 grid-margin">
               <div class="card">
@@ -290,46 +244,47 @@
                     </div>
                   </div>
 				  <canvas id="myChart" height="150" style="background-color: #EDEADF;"></canvas>
-<script>
-var ctx = document.getElementById("myChart").getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday"],
-        datasets: [{
-            label: 'Test Cases Written',
-            data: [<?php echo $tc_total;?>],
-            backgroundColor: 'rgba(165,26,77, 0.2)',
-            borderColor: 'rgba(165,26,77,1)',
-            borderWidth: 1
-		},
-		{
-            label: 'Test Cases Executed',
-            data: [<?php echo $tce_total;?>],
-            backgroundColor: 'rgba(0,140,192, 0.2)',
-            borderColor: 'rgba(0,140,192)',
-            borderWidth: 1
-		},
-		{
-            label: 'Defects Found',
-            data: [<?php echo $df_total;?>],
-            backgroundColor: 'rgba(0,121,38, 0.2)',
-            borderColor: 'rgba(0,121,38,1)',
-            borderWidth: 1
-		},
-	]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
-});
-</script>
+					<script>
+					var ctx = document.getElementById("myChart").getContext('2d');
+					var myChart = new Chart(ctx, {
+						type: 'line',
+						data: {
+								labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday"],
+								datasets: [
+									{
+										label: 'Test Cases Written',
+										data: [<?php echo $tc_total;?>],
+										backgroundColor: 'rgba(165,26,77, 0.2)',
+										borderColor: 'rgba(165,26,77,1)',
+										borderWidth: 1
+						},
+						{
+										label: 'Test Cases Executed',
+										data: [<?php echo $tce_total;?>],
+										backgroundColor: 'rgba(0,140,192, 0.2)',
+										borderColor: 'rgba(0,140,192)',
+										borderWidth: 1
+						},
+						{
+										label: 'Defects Found',
+										data: [<?php echo $df_total;?>],
+										backgroundColor: 'rgba(0,121,38, 0.2)',
+										borderColor: 'rgba(0,121,38,1)',
+										borderWidth: 1
+						}
+								]
+						},
+						options: {
+								scales: {
+										yAxes: [{
+												ticks: {
+														beginAtZero:true
+												}
+										}]
+								}
+						}
+					});
+					</script>
 
                 </div>
               </div>

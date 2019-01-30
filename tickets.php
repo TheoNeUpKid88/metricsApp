@@ -8,7 +8,7 @@
 		$tix_tspent = $_POST['tix_tspent'];
 		$tix_ttype = $_POST['tix_ttype'];
 		$tix_logtype = $_POST['tix_logtype'];
-		$tix_rnd = $_POST['tix_rnd'];
+		$tix_rnd = $_POST['round'];
 		include('includes/dbc.php');
 		$sql = "INSERT INTO time_log (tk_id, user_id, tl_date, tl_time, t_type, l_type, round) VALUES ('$tix_num','$user_id','$date_to_srv','$tix_tspent','$tix_ttype', '$tix_logtype','$tix_rnd')";
 		if($con->query($sql) === TRUE)
@@ -28,23 +28,25 @@
 	<?php include("includes/head.inc"); ?>
 	<?php include("includes/js.inc"); ?>
 	<title>
-		My Tickets
+		My Ticket Timelog
 	</title>
 </head>
 
 <body>
 	<div id="page-container">
 		<div id="content-wrap">
-			<header class="jumbotron mt-4">
-				<div class="container">
-					<div class="display-4 mb-4">My Tickets
-						<!-- <img src="images/Logo2.png" alt="logo"> -->
+			<header class="jumbotron mt-4"><div class="container logo_div">
+					<div class="display-1 mb-4">
+						<img src="images/logo_metrix-sm.png" alt="logo">
+						<div class="logo_text">
+						My Ticket Timelog
+						</div>
 					</div>
 				</div>
 			</header>
 			<div class="container">
 				<?php include("includes/nav.inc"); ?>
-				<h1 class="my-3 text-center">Report Your Ticket Hours</h1>
+				<h1 class="my-5 text-center">Report Your Ticket Hours</h1>
 				<div class="all_forms">
 					<form method="POST">
 						<?php if (isset($msg)) {echo $msg."<br>";}?>
@@ -68,10 +70,7 @@
 								</select>
 							</div>
 							<div class="col-md-1"></div>
-							<div class=" form-group col-md-2">
-								<label class="control-label">Round</label>
-								<input class="form-control" type="number" name="tix_rnd" min="1" max="20" required>
-							</div>
+							<?php require("includes/round.inc"); ?>
 						</div>
 						<div class="form-row mb-4">
 							<div class="col-md-5">
@@ -146,7 +145,7 @@
 							</div>
 							<div class="col-md-2"></div>
 							<div class="col-md-5">
-								<legend>Current Ticket Status</legend>
+								<legend>Enter Log Type</legend>
 								<div class="form-row">
 									<div class="form-group col-md-5">
 										<label class="control-label">Log Type</label>
@@ -165,10 +164,14 @@
 						</div>
 					</form>
 				</div>
-				<section>
-					<?php include("includes/this_week.inc"); ?>
-					<?php include("includes/day_of_week.inc"); ?>
-
+				</div>
+				<div class="row my-4">
+					<div class="col"><hr style="margin-top: 50px; margin-bottom: 50px; border-top: 4px solid #beb28b;"></div>
+					<div class="col-auto" style="margin-top: 13px; margin-bottom: 13px;"><?php include("includes/this_week.inc"); ?></div>
+					<div class="col"><hr style="margin-top: 50px; margin-bottom: 50px; border-top: 4px solid #beb28b;"></div>
+				</div>
+				<div class="container-fluid">
+					<div class="row">
 					<table class="table table-striped table-responsive-md">
 						<thead class="text-center">
 						<tr>
@@ -176,15 +179,17 @@
 							<th>Department</th>
 							<th>Ticket</th>
 							<th>Round</th>
-							<th>Log Type</th>
+							<th class="border-left">Log Type</th>
 							<th>Time Type</th>
 							<th>Time Spent</th>
+							<th class="border-left"></th>
 						</tr>
 								</thead>
 								<tbody>
 						<?php
 									include('includes/dbc.php');
-									$query = "SELECT tl.tl_date, tix.tk_number, tix.tk_title, tix.tk_dept, tl.l_type, tl.tl_time, tl.tk_id, tl.round, tl.t_type
+									$query = "SELECT tl.tl_date, tix.tk_number, tix.tk_title, tix.tk_dept, tl.l_type, tl.tl_time, tl.tk_id, tl.round, tl.t_type, 
+												tix.tk_id
 												FROM time_log as tl
 												LEFT JOIN tickets tix ON tix.tk_id = tl.tk_id
 												WHERE tix.tk_number IS NOT NULL
@@ -197,25 +202,30 @@
 										echo "<p>There has been a query error: $error_message</p>";
 									}
 									if(mysqli_num_rows($result)==0) {
-										echo "No analysts are here.";
+										echo "There are no new entries.";
 									}
 									while($row=mysqli_fetch_assoc($result)) {
+										$tk_id = $row['tk_id'];
 										$convert_day = $row['tl_date'];
 										$day_date = strftime("%A",strtotime($convert_day));
-										echo '<tr><td>'.$day_date.'</td>';
-										echo '<td>'.$row['tk_dept'].'</td>';
-										echo '<td>'.$row['tk_number']." - ".$row['tk_title'].'</td>';
+										echo '<tr><td class="text-center">'.$day_date.'</td>';
+										echo '<td class="text-center">'.$row['tk_dept'].'</td>';
+										echo '<td class="text-center">'.$row['tk_number']." - ".$row['tk_title'].'</td>';
 										echo '<td class="text-center">'.$row['round'].'</td>';
-										echo '<td>'.$row['l_type'].'</td>';
-										echo '<td>'.$row['t_type'].'</td>';
-										echo '<td class="text-center">'.$row['tl_time'].'</td></tr>';
+										echo '<td class="text-center border-left">'.$row['l_type'].'</td>';
+										echo '<td class="text-center">'.$row['t_type'].'</td>';
+										echo '<td class="text-center">'.$row['tl_time'].'</td>';
+										echo '<td  class="border-left" align="center"><div>
+										<a class="btn btn-primary delbtn" href="DB/delete_row.php?id='. $tk_id .'&table=time_log&id_name=tk_id">
+										<i class="fa fa-times text-danger fa-fw"></i>Delete</a></div></td></tr>';
 									}
 					?>
 					</tbody>
 					</table>
-				</section>
+								</div>
+								</div>
 				<?php include("includes/to_top.inc"); ?>
-			</div>
+			
 			</div>
 				<?php include("includes/footer.inc"); ?>
 								</div>

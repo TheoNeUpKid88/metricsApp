@@ -6,7 +6,7 @@ if(isset($_POST['submit_defect'])) {
 		$df_date_new = strtotime($df_date);
 		$date_to_srv = date("Y-m-d", $df_date_new);
 		$df_pr = $_POST['df_pr'];
-		$df_rnd = $_POST['df_rnd'];
+		$df_rnd = $_POST['round'];
 		$cg_cri = $_POST['cg_cri'];
 		$cg_maj = $_POST['cg_maj'];
 		$cg_min = $_POST['cg_min'];
@@ -27,11 +27,7 @@ if(isset($_POST['submit_defect'])) {
 		{
 			$msg = '<div class="alert alert-danger mx-5 px-1"> <strong>Not Submitted!</strong> Please try again. </div>';
 		}
-	}
-	if (isset($_SESSION['del_msg'])) {
-		echo $_SESSION['del_msg'];
-		unset($_SESSION['del_msg']);
-	   }	
+	}	
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -49,15 +45,18 @@ if(isset($_POST['submit_defect'])) {
 	<div id="page-container">
 		<div id="content-wrap">
 			<header class="jumbotron mt-4">
-				<div class="container">
-					<div class="display-4 mb-4">My Defects
-						<!-- <img src="images/Logo2.png" alt="logo"> -->
+			<div class="container logo_div">
+					<div class="display-1 mb-4">
+						<img src="images/logo_metrix-sm.png" alt="logo">
+						<div class="logo_text">
+						My Defects
+						</div>
 					</div>
 				</div>
 			</header>
 			<div class="container">
 				<?php require("includes/nav.inc"); ?>
-				<h1 class="my-3 text-center">Report Your Defects</h1>
+				<h1 class="my-5 text-center">Report Your Defects</h1>
 				<div class="all_forms">
 					<form method="POST">
 						<?php if (isset($msg)) {echo $msg."<br>";}?>
@@ -83,10 +82,33 @@ if(isset($_POST['submit_defect'])) {
 							<div class="col-md-1"></div>
 							<div class=" form-group col-md-2">
 								<label class="control-label">Round</label>
-								<input class="form-control" type="number" name="df_rnd" min="1" max="20" required>
-							</div>
+								<div>
+									<select class="form-control" name="round">
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10">10</option>
+										<option value="11">11</option>
+										<option value="12">12</option>
+										<option value="13">13</option>
+										<option value="14">14</option>
+										<option value="15">15</option>
+										<option value="16">16</option>
+										<option value="17">17</option>
+										<option value="18">18</option>
+										<option value="19">19</option>
+										<option value="20">20</option>
+									</select>
+								</div>
+								</div>
 						</div>
-						<legend>Enter Defects</legend>
+						<legend>Enter Defects Identified by Severity</legend>
 						<div class="form-row mb-4">
 							<div class="col-md-3">
 								<h5>Content/Grammar</h5>
@@ -189,10 +211,18 @@ if(isset($_POST['submit_defect'])) {
 			</div>
 
 				</div>
+
+				<div class="row my-4">
+					<div class="col"><hr style="margin-top: 50px; margin-bottom: 50px; border-top: 4px solid #beb28b;"></div>
+					<div class="col-auto" style="margin-top: 13px; margin-bottom: 13px;"><?php include("includes/this_week.inc"); ?></div>
+					<div class="col"><hr style="margin-top: 50px; margin-bottom: 50px; border-top: 4px solid #beb28b;"></div>
+				</div>
+				<div class='alert alert-success' style='display:none' id='bootstrap-alert' data-dismiss='alert'>
+						Success! 
+						</div>
 				<div class="container-fluid">
 					<div class="row">
-					<?php include("includes/this_week.inc"); ?>
-					<?php if (isset($edit_msg)) {echo $edit_msg."<br>";}?>
+					<?php echo $del_msg;?>
 					<table id="tableone" class="table table-striped table-responsive-md" >
 						<thead class="text-center">
 						<tr class="double_row">
@@ -216,7 +246,7 @@ if(isset($_POST['submit_defect'])) {
 							<th class="border-left" >Critical</th>
 							<th>Major</th>
 							<th>Minor</th>
-							<th class="border-left">Status</th>
+							<th class="border-left"></th>
 						</tr>
 								</thead>
 								<tbody>
@@ -249,17 +279,17 @@ if(isset($_POST['submit_defect'])) {
 										echo "<p>There has been a query error: $error_message</p>";
 									}
 									if(mysqli_num_rows($result)==0) {
-										echo "No analysts are here.";
+										echo "There are no new entries.";
 									}
 									while($row=mysqli_fetch_assoc($result)) {
 										$df_id = $row['df_id'];
 										$convert_day = $row['df_date'];
 										$day_date = strftime("%A",strtotime($convert_day));
-										echo '<tr><td>'.$day_date.'</td>';
-										echo '<td>'.$row['pr_name'].'</td>';
-										echo '<td>'.$row['tcs_type'].'</td>';
-										echo '<td class="text-center">'.$row['df_round'].'</td>';
-										echo '<td class="border-left text-center" >'.$row['ContentGrammarCritical'].'</td>';
+										echo '<tr><td class="text-center">'.$day_date.'</td>';
+										echo '<td class="text-center">'.$row['pr_name'].'</td>';
+										echo '<td class="text-center">'.$row['tcs_type'].'</td>';
+										echo '<td class="text-center" id="rnd">'.$row['df_round'].'</td>';
+										echo '<td class="border-left text-center" id="cg_crit">'.$row['ContentGrammarCritical'].'</td>';
 										echo '<td class="text-center">'.$row['ContentGrammarMajor'].'</td>';
 										echo '<td class="text-center">'.$row['ContentGrammarMinor'].'</td>';
 										echo '<td class="border-left text-center" >'.$row['functionalCritical'].'</td>';
@@ -268,29 +298,31 @@ if(isset($_POST['submit_defect'])) {
 										echo '<td class="border-left text-center" >'.$row['NonfunctionalCritical'].'</td>';
 										echo '<td class="text-center">'.$row['NonfunctionalMajor'].'</td>';
 										echo '<td class="text-center">'.$row['NonfunctionalMinor'].'</td>';
-										echo '<td  class="border-left" contenteditable="false"><div class="ticket-actions col-md-2">
-										<div class="btn-group dropdown">
-										  <button type="button" class="btn dropdown-toggle btn-sm" data-toggle="dropdown">
-											Manage
-										  </button>
-										  <div class="dropdown-menu">
-											<a class="dropdown-item editbtn">
-											  <i class="fa fa-reply fa-fw"></i>Edit</a>
-											  <a class="dropdown-item cancelbtn" href="javascript:history.go(0)">
-											  <i class="fa fa-reply fa-fw"></i>Cancel</a>
-											  <a class="dropdown-item savebtn" href="DB/defect/delete_defect.php?id='. $df_id .'">
-											  <i class="fa fa-check text-success fa-fw"></i>Save</a>
-											<div class="dropdown-divider"></div>
-											
-											<a class="dropdown-item" href="DB/defect/delete_defect.php?id='. $df_id .'">
-											  <i class="fa fa-times text-danger fa-fw"></i>Delete</a>
-										  </div>
-										</div>
-									  </div></td></tr>';
+										echo '<td  class="border-left" align="center"><div>
+										<a class="btn btn-primary delbtn" href="DB/delete_row.php?id='. $df_id .'&table=defects&id_name=df_id" onclick="return deleletconfig()">
+										<i class="fa fa-times text-danger fa-fw"></i>Delete</a></div></td></tr>';
 									}
 					?>
 					</tbody>
 					</table>
+					<div id="myModal" class="modal fade">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">Confirmation</h4>
+								</div>
+								<div class="modal-body">
+									<p>Do you want to save changes you made to document before closing?</p>
+									<p class="text-warning"><small>If you don't save, your changes will be lost.</small></p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-primary">Save changes</button>
+								</div>
+							</div>
+						</div>
+					</div>
 					</div>
 						</div>
 				<?php include("includes/to_top.inc"); ?>
@@ -299,3 +331,4 @@ if(isset($_POST['submit_defect'])) {
 								</div>
 	</body>
 </html>
+

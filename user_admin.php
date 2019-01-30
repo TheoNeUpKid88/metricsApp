@@ -75,15 +75,18 @@ if(isset($_POST['edit_user'])) {
 	<div id="page-container">
 		<div id="content-wrap">
 			<header class="jumbotron mt-4">
-				<div class="container">
-					<div class="display-4 mb-4">User Management
-						<!-- <img src="images/Logo2.png" alt="logo"> -->
+			<div class="container logo_div">
+					<div class="display-1 mb-4">
+						<img src="images/logo_metrix-sm.png" alt="logo">
+						<div class="logo_text">
+						User Management
+						</div>
 					</div>
 				</div>
 			</header>
 			<div class="container">
 				<?php include("includes/nav.inc"); ?>
-				<h1 class="my-3 text-center">Add or Edit a User</h1>
+				<h1 class="my-5 text-center">Add or Edit a User</h1>
 				<div class="all_forms">
 					<form method="POST">
 						<?php if (isset($msg)) {echo $msg."<br>";}?>

@@ -9,4 +9,9 @@
 	if ($login != true) {
 		header('Location: login.php');
 	}
+	$referer = $_SERVER['HTTP_REFERER'];
+	if(isset($_SESSION['MSG'])){
+   	  //echo $_SESSION['MSG'];
+	//unset($_SESSION["message"]);
+   	}
 ?>

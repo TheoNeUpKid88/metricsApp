@@ -8,7 +8,7 @@
 		$pr_time = $_POST['pr_time'];
 		$pr_ttype = $_POST['pr_ttype'];
 		$pr_ltype = $_POST['pr_ltype'];
-		$pr_rnd = $_POST['pr_rnd'];
+		$pr_rnd = $_POST['round'];
 		include('includes/dbc.php');
 		$sql = "INSERT INTO time_log (pr_id, user_id, tl_date, tl_time, t_type, l_type, round) VALUES ('$pr_name','$user_id','$pr_date_to_srv','$pr_time','$pr_ttype', '$pr_ltype','$pr_rnd')";
 		if($con->query($sql) === TRUE)
@@ -28,7 +28,7 @@
 	<?php include("includes/head.inc"); ?>
 	<?php include("includes/js.inc"); ?>
 	<title>
-		My Project Time Log
+		My Project Timelog
 	</title>
 </head>
 
@@ -36,15 +36,18 @@
 	<div id="page-container">
 		<div id="content-wrap">
 			<header class="jumbotron mt-4">
-				<div class="container">
-					<div class="display-4 mb-4">My Project Time Log
-						<!-- <img src="images/Logo2.png" alt="logo"> -->
+			<div class="container logo_div">
+					<div class="display-1 mb-4">
+						<img src="images/logo_metrix-sm.png" alt="logo">
+						<div class="logo_text">
+						My Project Timelog
+						</div>
 					</div>
 				</div>
 			</header>
 			<div class="container">
 				<?php include("includes/nav.inc"); ?>
-				<h1 class="my-3 text-center">Report Your Project Hours</h1>
+				<h1 class="my-5 text-center">Report Your Project Hours</h1>
 				<div class="all_forms">
 					<form method="POST">
 						<?php if (isset($msg)) {echo $msg."<br>";}?>
@@ -68,10 +71,7 @@
 								</select>
 							</div>
 							<div class="col-md-1"></div>
-							<div class=" form-group col-md-2">
-								<label class="control-label">Round</label>
-								<input class="form-control" type="number" name="pr_rnd" min="1" max="20" required>
-							</div>
+							<?php require("includes/round.inc"); ?>
 						</div>
 						<div class="form-row">
 							<div class="col-md-5">
@@ -146,7 +146,7 @@
 							</div>
 							<div class="col-md-2"></div>
 							<div class="col-md-5">
-								<legend>Current Ticket Status</legend>
+								<legend>Enter Log Type</legend>
 								<div class="form-row">
 									<div class="form-group col-md-5">
 										<label class="control-label">Log Type</label>
@@ -168,8 +168,14 @@
 						</div>
 					</form>
 				</div>
-				<section>
-					<?php include("includes/this_week.inc"); ?>
+				</div>
+				<div class="row my-4">
+					<div class="col"><hr style="margin-top: 50px; margin-bottom: 50px; border-top: 4px solid #beb28b;"></div>
+					<div class="col-auto" style="margin-top: 13px; margin-bottom: 13px;"><?php include("includes/this_week.inc"); ?></div>
+					<div class="col"><hr style="margin-top: 50px; margin-bottom: 50px; border-top: 4px solid #beb28b;"></div>
+				</div>
+				<div class="container-fluid">
+					<div class="row">
 
 					<table class="table table-striped table-responsive-md">
 						<thead class="text-center">
@@ -178,15 +184,16 @@
 							<th>Project Name</th>
 							<th>Lead</th>
 							<th>Round</th>
-							<th>Log Type</th>
+							<th class="border-left">Log Type</th>
 							<th>Time Type</th>
 							<th>Time Spent</th>
+							<th class="border-left"></th>
 						</tr>
 								</thead>
 								<tbody>
 						<?php
 						include('includes/dbc.php');
-						$query = "SELECT tl.tl_date, p.pr_name, u.first_name,tl.round,tl.l_type,tl.t_type,tl.tl_time
+						$query = "SELECT tl.tl_date, p.pr_name, u.first_name,tl.round,tl.l_type,tl.t_type,tl.tl_time, p.pr_id
 									FROM time_log AS tl
 									LEFT JOIN projects p ON p.pr_id = tl.pr_id
 									JOIN users u ON u.user_id = p.pr_lead
@@ -200,25 +207,30 @@
 										echo "<p>There has been a query error: $error_message</p>";
 									}
 									if(mysqli_num_rows($result)==0) {
-										echo "No analysts are here.";
+										echo "There are no new entries.";
 									}
 									while($row=mysqli_fetch_assoc($result)) {
+										$pr_id=$row['pr_id'];
 										$convert_day = $row['tl_date'];
 										$day_date = strftime("%A",strtotime($convert_day));
-										echo '<tr><td>'.$day_date.'</td>';
-										echo '<td>'.$row['pr_name'].'</td>';
-										echo '<td>'.$row['first_name'].'</td>';
+										echo '<tr><td class="text-center">'.$day_date.'</td>';
+										echo '<td class="text-center">'.$row['pr_name'].'</td>';
+										echo '<td class="text-center">'.$row['first_name'].'</td>';
 										echo '<td class="text-center">'.$row['round'].'</td>';
-										echo '<td>'.$row['l_type'].'</td>';
-										echo '<td>'.$row['t_type'].'</td>';
-										echo '<td class="text-center">'.$row['tl_time'].'</td></tr>';
+										echo '<td class="text-center border-left">'.$row['l_type'].'</td>';
+										echo '<td class="text-center">'.$row['t_type'].'</td>';
+										echo '<td class="text-center">'.$row['tl_time'].'</td>';
+										echo '<td  class="border-left" align="center"><div>
+										<a class="btn btn-primary delbtn" href="DB/delete_row.php?id='. $pr_id .'&table=time_log&id_name=pr_id">
+										<i class="fa fa-times text-danger fa-fw"></i>Delete</a></div></td></tr>';
 									}
 					?>
 					</tbody>
 					</table>
-				</section>
+								</div>
+								</div>
 				<?php include("includes/to_top.inc"); ?>
-			</div>
+			
 			</div>
 				<?php include("includes/footer.inc"); ?>
 								</div>

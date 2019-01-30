@@ -65,15 +65,18 @@ if(isset($_POST['edit_ticket'])) {
 	<div id="page-container">
 		<div id="content-wrap">
 		<header class="jumbotron mt-4">
-			<div class="container">
-				<div class="display-4 mb-4">Ticket Management
-					<!-- <img src="images/Logo2.png" alt="logo"> -->
+		<div class="container logo_div">
+					<div class="display-1 mb-4">
+						<img src="images/logo_metrix-sm.png" alt="logo">
+						<div class="logo_text">
+						Ticket Management
+						</div>
+					</div>
 				</div>
-			</div>
 		</header>
 		<div class="container">
 			<?php include("includes/nav.inc"); ?>
-			<h1 class="my-3 text-center">Add or Edit a Ticket</h1>
+			<h1 class="my-5 text-center">Add or Edit a Ticket</h1>
 			<div class="all_forms">
 				<form method="POST">
 					<?php if (isset($msg2)) {echo $msg2."<br>";}?>
@@ -86,7 +89,7 @@ if(isset($_POST['edit_ticket'])) {
 							</div>
 						</div>
 						<div class="col-md-1"></div>
-						<div class="form-group col-md-4">
+						<div class="form-group col-md-5">
 							<label class="control-label">Ticket Title</label>
 							<div class="input-group">
 								<input class="form-control" type="text" name="add_desc" required>
@@ -123,15 +126,20 @@ if(isset($_POST['edit_ticket'])) {
 									{
 									echo '<option value="'.$rows['tk_id'].'">'.$rows['tk_number']." - ".$rows['tk_title'].'</option>';
 									}
+									global $tk_id;
+									 $tk_id = $row['tk_id'];
+									 global $tk_title;
+									$title = $row['tk_title'];
 								?>
 							</select>
 						</div>
 					</div>
+					<?php echo $tk_id; ?>
 					<div class="form-row">
 						<div class="form-group col-md-2">
 							<label class="control-label">Ticket Number</label>
 							<div class="input-group">
-								<input class="form-control" type="text" name="edit_num" required>
+								<input class="form-control" type="text" name="edit_num" value="<?php echo $tk_id; ?>" required>
 							</div>
 						</div>
 						<div class="col-md-1"></div>

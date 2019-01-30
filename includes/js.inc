@@ -57,6 +57,7 @@ $(document).on('click', '.pass_show .ptxt', function () {
   //EDIT TABLE 
 
 $(document).ready(function(){
+    
     $('.savebtn').hide();
     $('.cancelbtn').hide();
   $('.editbtn').click(function () {
@@ -79,17 +80,64 @@ $(document).ready(function(){
     $('.cancelbtn').click(function () {
               $.each(currentTD, function () {
                     //alert("second if "+currentTD.html());
-                    $(this).val($(this).data("previous-value"));
                       $(this).prop('contenteditable', false).removeAttr("style");
                     $('.editbtn').show();
                     $('.savebtn').hide();
                     $('.cancelbtn').hide();
                     })
                   });
+           $('.savebtn').click(function () {
+              $.each(currentTD, function () {
+                    //alert("second if "+currentTD.html());
+                      $(this).prop('contenteditable', false).removeAttr("style");
+                      //var df_id = $(this).('#pr_name');
+                      var df_id2 = $(this).parent("td").text;
+                      var df_id3 = "45" ;
+                      console.log(df_id2);
+                      $.post("DB/defect/edit_defect.php", {df_id: df_id2, day_date: df_id3}, function(data){console.log(data);
+                      });
+                      
+                $('.editbtn').show();
+                    $('.savebtn').hide();
+                    $('.cancelbtn').hide();
+                  });
+                    })
+               
     
           });
           });
+
+        function deleletconfig(){
+
+        var del=confirm("Are you sure you want to delete this record?");
+        if (del==true){
+        alert ("Record deleted")
+        }else{
+            alert("Record Not Deleted");
+            return false;
+        }
+        return del;
+        }
+        $(document).ready(function(){
+            $(".btn").click(function(){
+                $("#myModal").modal('show');
+            });
+        });
+        function showAlerts(){
+        document.getElementById('bootstrap-alert').style.display = 'block';
+        setTimeout(function(){document.getElementById('bootstrap-alert').style.display = 'none'}, 1700);
+        
+        
+        }
+		 $(document).ready(function (){
+             
+			 $("#test-content").append("<p>Testing Ajax with PHP <?php echo $user_id; ?></p>");
+             $("#test-content").css("border", "3px solid red");
+             $("#test-content").load("test_ajax.html")
+              
+		 });
 </script>
+
 
     
     
